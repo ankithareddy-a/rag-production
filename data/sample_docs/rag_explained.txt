@@ -1,0 +1,73 @@
+Retrieval-Augmented Generation (RAG) Explained
+
+Retrieval-Augmented Generation (RAG) is an AI framework that enhances large language model (LLM) outputs by incorporating relevant information retrieved from external knowledge sources before generating a response.
+
+Why RAG?
+
+Large language models have a knowledge cutoff date and can hallucinate (generate plausible but incorrect information). RAG addresses these limitations by:
+1. Grounding responses in real, up-to-date documents
+2. Reducing hallucination by providing factual context
+3. Allowing domain-specific knowledge without retraining the model
+4. Providing citations and source references for transparency
+
+How RAG Works
+
+Step 1: Document Ingestion
+Documents are loaded, cleaned, and split into smaller chunks. Each chunk is converted into a dense vector embedding using an embedding model. These embeddings are stored in a vector database.
+
+Step 2: Query Processing
+When a user asks a question, the question is embedded into the same vector space as the documents. This creates a query vector.
+
+Step 3: Retrieval
+The query vector is compared against all stored document vectors using similarity search (e.g., cosine similarity). The top-k most similar chunks are retrieved.
+
+Step 4: Augmentation
+The retrieved chunks are combined with the original question to create an augmented prompt. This prompt includes: the relevant context, the question, and instructions for the LLM.
+
+Step 5: Generation
+The augmented prompt is sent to the LLM. The LLM generates an answer based on the provided context, not just its training data.
+
+RAG Components
+
+Embedding Models
+Embedding models convert text into dense vectors that capture semantic meaning. Examples include:
+- sentence-transformers/all-MiniLM-L6-v2 (fast, open-source, 384 dimensions)
+- OpenAI text-embedding-ada-002 (1536 dimensions, API-based)
+- Cohere embed-english-v3.0 (API-based)
+
+Vector Databases
+Vector databases store and index embeddings for efficient similarity search. Examples include:
+- Redis Stack with RedisVL
+- Pinecone
+- Weaviate
+- Chroma
+- Milvus
+- Qdrant
+
+Chunking Strategies
+How you split documents greatly affects retrieval quality:
+- Fixed-size chunking: Split by token or character count
+- Recursive chunking: Split on natural boundaries (paragraphs, sentences)
+- Semantic chunking: Split based on topic changes
+- Overlap: Include overlapping text between chunks to preserve context at boundaries
+
+Advanced RAG Techniques
+
+Hybrid Search
+Combines vector similarity search with keyword (BM25) search. Vector search captures semantic meaning; keyword search captures exact matches. Combining both improves recall and precision.
+
+Re-ranking
+After initial retrieval, a cross-encoder re-ranks the results by evaluating the relevance of each chunk to the question. More accurate than bi-encoder retrieval but slower.
+
+Semantic Caching
+Cache question-answer pairs using vector similarity. If a similar question was already answered, return the cached response instantly, avoiding redundant LLM calls.
+
+HyDE (Hypothetical Document Embeddings)
+Generate a hypothetical answer to the question, embed it, then use that embedding for retrieval. This can improve retrieval when the question and document styles differ significantly.
+
+RAG Evaluation Metrics
+- Faithfulness: Are all claims in the answer supported by the context?
+- Answer Relevance: Is the answer relevant to the question?
+- Context Precision: Are the retrieved chunks relevant to the question?
+- Context Recall: Were all relevant chunks retrieved?
+The RAGAS framework automates evaluation of these metrics.

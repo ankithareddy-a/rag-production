@@ -1,0 +1,43 @@
+services:
+  # Redis Stack = Redis + RedisSearch (vector search) + RedisJSON + RedisInsight UI
+  redis:
+    image: redis/redis-stack:latest
+    container_name: rag-redis
+    ports:
+      - "6379:6379"     # Redis port
+      - "8001:8001"     # RedisInsight UI — open localhost:8001 to monitor
+    environment:
+      - REDIS_ARGS=--requirepass ragpassword --save 60 1 --loglevel warning
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "ragpassword", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Ollama — local LLM server (OpenAI-compatible API)
+  # After first `docker compose up`, pull a model:
+  #   docker exec -it rag-ollama ollama pull llama3
+  #   docker exec -it rag-ollama ollama pull nomic-embed-text  (optional: for Ollama embeddings)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: rag-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    # If you have an NVIDIA GPU, uncomment below:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+volumes:
+  redis_data:
+  ollama_data:
