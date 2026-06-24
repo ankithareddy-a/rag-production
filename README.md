@@ -47,3 +47,11 @@ This project uses AWS as the default cloud provider. Terraform provisions:
 - Amazon S3 bucket for raw and curated storage
 - Amazon RDS PostgreSQL instance for analytics
 - IAM resources for secure access
+
+## Continuous Integration
+
+A GitHub Actions workflow is configured to:
+- install Python dependencies and run `pytest`
+- initialize and validate Terraform configuration
+
+The CI workflow is located at `.github/workflows/ci.yml`.
