@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: "Staging model for order records"
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+          - unique
+      - name: amount
+        tests:
+          - not_null
+          - accepted_values:
+              values: [100, 200, 300, 400, 500]
+
+  - name: mart_customer_revenue
+    description: "Aggregated revenue by customer"
+    columns:
+      - name: customer_id
+        tests:
+          - not_null

@@ -1,0 +1,11 @@
+name: 'rag_production'
+version: '1.0'
+config-version: 2
+profile: 'rag_production'
+
+models:
+  rag_production:
+    staging:
+      materialized: view
+    marts:
+      materialized: table

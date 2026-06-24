@@ -1,39 +1,27 @@
-# Environment variables (contains secrets)
-.env
-
-# Python virtual environment
-venv/
-.venv/
-env/
-
-# Python cache
+# Python
 __pycache__/
 *.py[cod]
 *.pyo
-*.pyc
+*.pyd
+*.env
+.env
+env/
+venv/
+.venv/
 .pytest_cache/
-*.egg-info/
-dist/
-build/
 
-# Data files (large/local data)
-data/*.pdf
-data/*.txt
-data/*.csv
-data/*.json
+# Airflow
+airflow/logs/
+airflow/airflow.db
+airflow/dags/__pycache__/
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
+# DBT
+dbt/target/
 
-# macOS
+# Terraform
+terraform/.terraform/
+terraform/terraform.tfstate*
+terraform/.terraform.lock.hcl
+
+# System
 .DS_Store
-
-# Logs
-*.log
-logs/
-
-# Docker volumes
-redis-data/
